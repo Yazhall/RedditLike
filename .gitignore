@@ -7,6 +7,7 @@
 /public/bundles/
 /var/
 /vendor/
+/node_modules/
 ###< symfony/framework-bundle ###
 
 ###> phpunit/phpunit ###
@@ -22,3 +23,11 @@
 /.env
 /.env.dev
 /.env.test
+/docker-compose.yaml
+
+# Docker runtime
+/docker/nginx/*.log
+/docker/php/*.log
+# IDE
+/.idea/
+/.vscode/

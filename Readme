@@ -1,0 +1,12 @@
+# Projet Symfony + Docker
+
+Ce projet utilise Docker pour lancer :
+- Symfony (PHP 8.2 FPM)
+- Nginx
+- MariaDB
+
+## 🚀 Lancer le projet
+
+### 1. Copier le fichier d’exemple d’environnement
+```bash
+cp .env.example .env
