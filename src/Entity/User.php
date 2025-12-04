@@ -14,6 +14,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\Column (type: 'uuid', unique: true)]
+    #[ORM\GeneratedValue(strategy: 'NONE')]
     private ?Uuid $id = null;
     public function __construct()
     {
@@ -26,9 +27,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $firstname = null;
     #[ORM\Column (type: Types::STRING, length: 255)]
     private ?string $lastname = null;
-    #[ORM\Column (type: Types::NUMBER, nullable: true)]
-    private ?float $tel = null;
-    #[ORM\Column (type: Types::STRING, length: 255)]
+    #[ORM\Column (type: Types::STRING, nullable: true)]
+    private ?string $tel = null;
+    #[ORM\Column (type: Types::STRING, )]
     private ?string $email = null;
     #[ORM\Column (type: Types::STRING, length: 255)]
     private ?string $password = null;
@@ -71,12 +72,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getTel(): ?float
+    public function getTel(): ?string
     {
         return $this->tel;
     }
 
-    public function setTel(?float $tel): self
+    public function setTel(?string $tel): self
     {
         $this->tel = $tel;
         return $this;
@@ -86,6 +87,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->email;
     }
+
 
     public function setEmail(?string $email): self
     {
@@ -112,6 +114,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsVerified(?bool $is_verified): self
     {
         $this->is_verified = $is_verified;
+        return $this;
+    }
+    public function setPassword(?string $password): self
+    {
+        $this->password = $password;
         return $this;
     }
 

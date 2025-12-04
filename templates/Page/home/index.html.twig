@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    {% if is_granted('ROLE_ADMIN') %}
+        Administrateur
+    {% endif %}
+    {% if is_granted('ROLE_USER') %}
+    {% else %}
+        Bonjour anonyme
+    {% endif %}
+    <a href="{{ path('app_home_index') }}">Venez voir mon site</a>
+{% endblock body %}

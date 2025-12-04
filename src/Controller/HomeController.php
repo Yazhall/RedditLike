@@ -21,12 +21,9 @@ class HomeController extends AbstractController
         return $this->render('Page/home/index.html.twig');
     }
 
-    #[Route('/creat_user', name: 'app_create_user')]
-    public function createUser(EntityManagerInterface $entityManager): Response
-    {
-        $user = new User();
-        $entityManager->persist($user);
-        $entityManager->flush();
-        return $this->redirectToRoute('app_home_index');
-    }
+
+
+
+
+
 }
