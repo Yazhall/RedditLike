@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -20,6 +22,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
 
         $this->id = Uuid::v4();
+        $this->tokens = new ArrayCollection();
     }
     #[ORM\Column (type: Types::STRING, length: 255)]
     private ?string $username = null;
@@ -39,9 +42,45 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column (type: Types::SIMPLE_ARRAY)]
     private array $roles = ['ROLE_USER'];
 
+    #[ORM\OneToMany(targetEntity: Token::class, mappedBy: 'user', cascade: ['persist'])]
+    private Collection $tokens;
+
+    #[ORM\Column(type: Types::BOOLEAN)]
+    private bool $enabled = false;
+
     public function getFirstname(): ?string
     {
         return $this->firstname;
+    }
+
+    public function givetoken(Token $token): self
+    {
+        $token->setUser($this);
+        $this->tokens->add($token);
+        return $this;
+    }
+
+    public function getTokens(): Collection
+    {
+        return $this->tokens;
+    }
+
+
+    public function setTokens(Collection $tokens): self
+    {
+        $this->tokens = $tokens;
+        return $this;
+    }
+
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
+    }
+
+    public function setEnabled(bool $enabled): self
+    {
+        $this->enabled = $enabled;
+        return $this;
     }
 
     public function getUsername(): ?string
@@ -146,6 +185,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->getEmail();
     }
 
+    public function addToken(Token $token):self
+    {
+        $token->setUser($this);
+        $this->tokens->add($token);
+        return $this;
+    }
 
 
 }

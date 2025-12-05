@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Entity\Token;
 use App\Form\Type\UserType;
+use App\Service\TokenService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,6 +23,8 @@ class UserController extends AbstractController
         Request $request,
         UserPasswordHasherInterface $passwordHasher,
         EntityManagerInterface $entityManager,
+        TokenService $tokenService
+
     ): Response
     {
         $user = new User();
@@ -29,14 +32,16 @@ class UserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            // Récupération du mot de passe depuis le RepeatedType
+            # Récupération du mot de passe depuis le RepeatedType
             $plainPassword = $form->get('plainPassword')->getData();
 
-            // Hash
+            # ont hash le PWD
             $hashedPassword = $passwordHasher->hashPassword($user, $plainPassword);
             $user->setPassword($hashedPassword);
+            $token = $tokenService->createToken($user);
+            $user->addToken($token);
 
-            // Sauvegarde
+
             $entityManager->persist($user);
             $entityManager->flush();
 
