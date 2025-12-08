@@ -15,7 +15,7 @@ class Token
     private ?int $id = null;
 
     #[ORM\Column(type: Types::STRING)]
-    private ?string $tokenvalue = null;
+    private ?string $tokenValue = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $expiresAt = null;
@@ -35,14 +35,14 @@ class Token
         return $this;
     }
 
-    public function getTokenvalue(): ?string
+    public function getTokenValue(): ?string
     {
-        return $this->tokenvalue;
+        return $this->tokenValue;
     }
 
-    public function setTokenvalue(?string $tokenvalue): self
+    public function setTokenValue(string $tokenValue): self
     {
-        $this->tokenvalue = $tokenvalue;
+        $this->tokenValue = $tokenValue;
         return $this;
     }
 
