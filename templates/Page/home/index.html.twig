@@ -1,13 +1,19 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    <ul>
+        <li>
+            <a href="{{ path('app_user_create') }}">register</a>
+        </li>
+        <li>
+            <a href="{{ path('app_login') }}">login</a>
+        </li>
+        <li>
+            <a href="{{ path('app_home_index') }}">contact</a>
+        </li>
+    </ul>
 
-    {% if is_granted('ROLE_ADMIN') %}
-        Administrateur
-    {% endif %}
-    {% if is_granted('ROLE_USER') %}
-    {% else %}
-        Bonjour anonyme
-    {% endif %}
-    <a href="{{ path('app_home_index') }}">Venez voir mon site</a>
-{% endblock body %}
+
+
+
+{% endblock %}

@@ -23,6 +23,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         $this->id = Uuid::v4();
         $this->tokens = new ArrayCollection();
+
     }
     #[ORM\Column (type: Types::STRING, length: 255)]
     private ?string $username = null;

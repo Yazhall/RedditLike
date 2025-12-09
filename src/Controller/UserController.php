@@ -8,6 +8,7 @@ use App\Entity\Token;
 use App\Entity\User;
 use App\Form\Type\UserType;
 use App\Repository\TokenRepository;
+use App\Repository\UserRepository;
 use App\Service\MailerService;
 use App\Service\TokenService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -71,8 +72,9 @@ class UserController extends AbstractController
 
 
     #[Route('/login', name: 'app_login')]
-    public function login(AuthenticationUtils $utils): Response
+    public function login(AuthenticationUtils $utils, Request $request,): Response
     {
+        $request->getSession()->invalidate();
         return $this->render('Page/user/login.html.twig', [
             'last_username' => $utils->getLastUsername(),
             'error' => $utils->getLastAuthenticationError(),
@@ -111,6 +113,70 @@ class UserController extends AbstractController
         $this->addFlash('success', 'Compte validé ! Vous pouvez vous connecter.');
 
         return $this->redirectToRoute('app_login');
+    }
+
+    #[Route('/lost_password', name: 'app_user_lost_password')]
+    public function lostPassword(
+        Request $request,
+        UserRepository $userRepository,
+        EntityManagerInterface $entityManager,
+        MailerService $mailer,
+        TokenService $tokenService
+
+    ): Response {
+        if ($request->isMethod('POST')) {
+            $email = $request->request->get('email');
+            $user = $userRepository->findOneBy(['email' => $email]);
+
+            if ($user) {
+                $token = $tokenService->createToken($user);
+                $entityManager->persist($token);
+                $entityManager->flush();
+
+                $mailer->sendEmailValidation(
+                    $email,
+                    'Réinitialisation du mot de passe',
+                    'Mail/email_reset_password',
+                    ['token' => $token->getTokenValue()]
+
+                );
+            }
+            $this->addFlash('success', 'Si cette adresse existe, un lien a été envoyé.');
+            return $this->redirectToRoute('app_login');
+        }
+        return $this->render('Page/user/lost_password.html.twig');
+    }
+    #[Route('/reset_password/{token}', name: 'app_user_reset_password')]
+    public function resetPassword(
+        Request $request,
+        string $token,
+        TokenRepository $tokenRepository,
+        EntityManagerInterface $entityManager,
+        UserPasswordHasherInterface $passwordHasher,
+
+    ): Response {
+        $tokenEntity = $tokenRepository->findOneBy(['tokenValue' => $token]);
+
+        if (!$tokenEntity) {
+            throw $this->createNotFoundException('Token invalide.');
+        }
+
+        if ($tokenEntity->getExpiresAt() < new \DateTime()) {
+            throw $this->createAccessDeniedException('Token expirer');
+        }
+        $user = $tokenEntity->getUser();
+
+        if ($request->isMethod('POST')) {
+            $password = $request->request->get('password');
+            $hashed = $passwordHasher->hashPassword($user, $password);
+            $user->setPassword($hashed);
+            $entityManager->remove($tokenEntity);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Mot de passe changé ! Vous pouvez vous connecter.');
+            return $this->redirectToRoute('app_login');
+        }
+        return $this->render('Page/user/reset_password.html.twig', ['token' => $token]);
     }
 
 }
