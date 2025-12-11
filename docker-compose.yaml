@@ -6,10 +6,10 @@ services:
         container_name: mariadb
         restart: unless-stopped
         environment:
-            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-            MYSQL_DATABASE: ${MYSQL_DATABASE}
-            MYSQL_USER: ${MYSQL_USER}
-            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: RedditLike
+
+
         ports:
             - "3306:3306"
         volumes:
@@ -25,6 +25,10 @@ services:
             - ./:/var/www/html
         depends_on:
             - mariadb
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: RedditLike
+            DATABASE_URL: "mysql://root:root@mariadb:3306/RedditLike?serverVersion=mariadb-11.8.5&charset=utf8mb4"
 
     nginx:
         image: nginx:alpine

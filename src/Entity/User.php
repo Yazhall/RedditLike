@@ -23,6 +23,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         $this->id = Uuid::v4();
         $this->tokens = new ArrayCollection();
+        $this->threads = new ArrayCollection();
 
     }
     #[ORM\Column (type: Types::STRING, length: 255)]
@@ -45,6 +46,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\OneToMany(targetEntity: Token::class, mappedBy: 'user', cascade: ['persist'])]
     private Collection $tokens;
+    #[ORM\OneToMany(targetEntity: Thread::class,mappedBy: 'author', cascade: ['persist', 'remove'])]
+    private Collection $threads;
+
+
 
     #[ORM\Column(type: Types::BOOLEAN)]
     private bool $enabled = false;
@@ -192,6 +197,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->tokens->add($token);
         return $this;
     }
+    public function getThreads(): Collection
+    {
+        return $this->threads;
+    }
 
+    public function setThreads(Collection $threads): self
+    {
+        $this->threads = $threads;
+        return $this;
+    }
+
+    public function addThread(Thread $thread): self
+    {
+        if (!$this->threads->contains($thread)) {
+            $this->threads->add($thread);
+            $thread->setAuthor($this);
+        }
+        return $this;
+
+    }
+
+    public function removeThread(Thread $thread): self{
+        if ($this->threads->removeElement($thread)) {
+            if ($thread->getAuthor() === $this) {
+                $thread->setAuthor(null);
+            }
+
+        }
+        return $this;
+    }
 
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Entity\Token;
+
 use App\Entity\User;
 use App\Form\Type\UserType;
 use App\Repository\TokenRepository;
@@ -12,8 +12,8 @@ use App\Repository\UserRepository;
 use App\Service\MailerService;
 use App\Service\TokenService;
 use Doctrine\ORM\EntityManagerInterface;
-use http\Encoding\Stream\Inflate;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -72,13 +72,19 @@ class UserController extends AbstractController
 
 
     #[Route('/login', name: 'app_login')]
-    public function login(AuthenticationUtils $utils, Request $request,): Response
+    public function login(AuthenticationUtils $utils, Security $security,): Response
     {
-        $request->getSession()->invalidate();
+        if ($security->getUser()) {
+            return $this->redirectToRoute('my_account');
+        }
         return $this->render('Page/user/login.html.twig', [
             'last_username' => $utils->getLastUsername(),
             'error' => $utils->getLastAuthenticationError(),
         ]);
+    }
+    #[Route('/my_account', name: 'my_account')]
+    public function myAccount():Response{
+        return $this->render('Page/user/my_account.html.twig');
     }
 
     #[Route('/validate/{token}', name: 'app_validate')]

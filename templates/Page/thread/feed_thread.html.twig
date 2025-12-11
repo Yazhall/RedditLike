@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% for thread in threads %}
+        <div class="thread-card">
+            <h2>{{ thread.title }}</h2>
+            <p>{{ thread.content }}</p>
+
+            <small>
+                Posté par {{ thread.author.username }}
+                le {{ thread.createdAt|date('d/m/Y H:i') }}
+            </small>
+        </div>
+
+        <hr>
+    {% else %}
+        <p>Aucun thread pour le moment.</p>
+    {% endfor %}
+
+
+{% endblock body %}
