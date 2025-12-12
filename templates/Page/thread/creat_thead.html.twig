@@ -2,10 +2,20 @@
 
 {% block body %}
     <h1>Créer un nouveau thread</h1>
-    {{ form_start(form) }}
+
+    {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
+
     {{ form_row(form.title) }}
     {{ form_row(form.content) }}
-    <input type="submit" value="Submit">
-    {{ form_end(form) }}
 
-{% endblock body %}
+    {{ form_row(form.uploads, {
+        label: 'Ajouter des fichiers (images, vidéos, gifs...)',
+        attr: {
+            multiple: true
+        }
+    }) }}
+
+    <button type="submit">Créer</button>
+
+    {{ form_end(form) }}
+{% endblock %}

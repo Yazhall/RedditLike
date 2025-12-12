@@ -3,10 +3,14 @@
 namespace App\Entity;
 
 use App\Repository\ThreadRepository;
-use App\Entity\User;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use App\Entity\User;
+use App\Entity\ThreadFile;
+use App\Entity\Comment;
 
 #[ORM\Entity(repositoryClass: ThreadRepository::class)]
 class Thread
@@ -32,16 +36,34 @@ class Thread
     #[ORM\Column(type: Types::BOOLEAN)]
     private bool $isDeleted = false;
 
+    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'thread', cascade: ['persist', 'remove'])]
+    private Collection $comments;
+
+    #[ORM\OneToMany(targetEntity: ThreadFile::class, mappedBy: 'thread', cascade: ['persist', 'remove'])]
+    private Collection $threadFiles;
+
     public function __construct()
     {
         $this->id = Uuid::v4();
         $this->createdAt = new \DateTimeImmutable();
-        $this->isDeleted = false;
+        $this->comments = new ArrayCollection();
+        $this->threadFiles = new ArrayCollection();
     }
 
     public function getId(): ?Uuid
     {
         return $this->id;
+    }
+
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): self
+    {
+        $this->author = $author;
+        return $this;
     }
 
     public function getTitle(): ?string
@@ -71,7 +93,7 @@ class Thread
         return $this->createdAt;
     }
 
-    public function getIsDeleted(): bool
+    public function isDeleted(): bool
     {
         return $this->isDeleted;
     }
@@ -82,14 +104,51 @@ class Thread
         return $this;
     }
 
-    public function getAuthor(): ?User
+    public function getComments(): Collection
     {
-        return $this->author;
+        return $this->comments;
     }
 
-    public function setAuthor(?User $author): self
+    public function addComment(Comment $comment): self
     {
-        $this->author = $author;
+        if (!$this->comments->contains($comment)) {
+            $this->comments->add($comment);
+            $comment->setThread($this);
+        }
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): self
+    {
+        if ($this->comments->removeElement($comment)) {
+            if ($comment->getThread() === $this) {
+                $comment->setThread(null);
+            }
+        }
+        return $this;
+    }
+
+    public function getThreadFiles(): Collection
+    {
+        return $this->threadFiles;
+    }
+
+    public function addThreadFile(ThreadFile $threadFile): self
+    {
+        if (!$this->threadFiles->contains($threadFile)) {
+            $this->threadFiles->add($threadFile);
+            $threadFile->setThread($this);
+        }
+        return $this;
+    }
+
+    public function removeThreadFile(ThreadFile $threadFile): self
+    {
+        if ($this->threadFiles->removeElement($threadFile)) {
+            if ($threadFile->getThread() === $this) {
+                $threadFile->setThread(null);
+            }
+        }
         return $this;
     }
 }

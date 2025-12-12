@@ -1,16 +1,22 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/my_account.css') }}">
+{% endblock %}
+
 {% block body %}
-    <ul>
-        <li>
-            <a href="{{ path('app_feed_thread') }}">tout les thread</a>
-        </li>
-        <li>
-            <a href="{{ path('app_thread_create') }}">crée un thread</a>
-        </li>
-    </ul>
+    <div class="account-container">
 
+        <h1>Mon compte</h1>
 
+        <ul class="account-menu">
+            <li>
+                <a href="{{ path('app_feed_thread') }}">Voir tous les threads</a>
+            </li>
+            <li>
+                <a href="{{ path('app_thread_create') }}">Créer un nouveau thread</a>
+            </li>
+        </ul>
 
-
+    </div>
 {% endblock %}
