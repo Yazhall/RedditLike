@@ -1,0 +1,78 @@
+/* ====== GLOBAL PAGE STYLE ====== */
+body {
+    background: #f5f6fa;
+    font-family: Arial, sans-serif;
+}
+
+/* ====== FORM WRAPPER ====== */
+form {
+    max-width: 380px;
+    margin: 60px auto;
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+
+/* ====== INPUTS ====== */
+form input[type="email"],
+form input[type="password"] {
+    width: 100%;
+    padding: 10px 12px;
+    margin-bottom: 18px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    background: #fafafa;
+    transition: border-color 0.2s, background 0.2s;
+}
+
+form input:focus {
+    border-color: #0059ff;
+    background: #fff;
+    outline: none;
+}
+
+/* ====== SUBMIT BUTTON ====== */
+form input[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    background: #0059ff;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.2s;
+}
+
+form input[type="submit"]:hover {
+    background: #003fcc;
+}
+
+/* ====== FORGOT PASSWORD ====== */
+form a {
+    display: block;
+    text-align: center;
+    margin-top: 12px;
+    font-size: 14px;
+    color: #0059ff;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+form a:hover {
+    color: #003fcc;
+}
+
+/* ====== ERROR MESSAGE ====== */
+.alert {
+    max-width: 380px;
+    margin: 20px auto;
+    background: #ffdddd;
+    padding: 12px;
+    border-left: 4px solid #ff4e4e;
+    border-radius: 6px;
+    color: #a10000;
+}

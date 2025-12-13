@@ -33,3 +33,5 @@
 /.vscode/
 /public/uploads/
 /public/uploads/threads/
+composer.phar
+NUL
