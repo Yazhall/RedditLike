@@ -1,21 +1,99 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Fil d'actualité{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/feed.css') }}">
+{% endblock %}
+
 {% block body %}
-    {% for thread in threads %}
-        <div class="thread-card">
-            <h2>{{ thread.title }}</h2>
-            <p>{{ thread.content }}</p>
 
-            <small>
-                Posté par {{ thread.author.username }}
-                le {{ thread.createdAt|date('d/m/Y H:i') }}
-            </small>
-        </div>
+    <h1>Fil d’actualité</h1>
 
-        <hr>
-    {% else %}
-        <p>Aucun thread pour le moment.</p>
-    {% endfor %}
+    <div class="thread-feed">
+
+        {% for thread in threads %}
+            {% set threadId = thread.id.toRfc4122 %}
+
+            <div class="thread-card">
 
 
-{% endblock body %}
+                <div class="thread-header">
+                    <strong>{{ thread.author.username }}</strong>
+                    <span>{{ thread.createdAt|date('d/m/Y H:i') }}</span>
+                </div>
+
+
+                <h3>{{ thread.title }}</h3>
+                <p>{{ thread.content }}</p>
+
+
+                {% if thread.threadFiles|length > 0 %}
+                    <div class="thread-files">
+                        {% for threadFile in thread.threadFiles %}
+                            {% set file = threadFile.file %}
+                            {% set path = asset(file.path) %}
+
+                            {% if file.originalName matches '/\\.(jpg|jpeg|png|gif)$/i' %}
+
+                                <img src="{{ path }}" class="file-image" alt="image">
+
+                            {% elseif file.originalName matches '/\\.(mp4|webm|ogg)$/i' %}
+
+                                <video controls class="file-video">
+                                    <source src="{{ path }}">
+                                </video>
+
+                            {% elseif file.originalName matches '/\\.(mp3|wav)$/i' %}
+
+                                <audio controls class="file-audio">
+                                    <source src="{{ path }}">
+                                </audio>
+
+                            {% else %}
+
+                                <a href="{{ path }}" download class="file-download">
+                                    Télécharger {{ file.originalName }}
+                                </a>
+                            {% endif %}
+
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <hr>
+
+
+                {% set comments = thread.comments|slice(0, 3) %}
+                <div class="comments-block">
+                    {% for comment in comments %}
+                        <div class="comment">
+                            <strong>{{ comment.author.username }}</strong>
+                            <span class="date">{{ comment.createdAt|date('d/m/Y H:i') }}</span>
+                            <p>{{ comment.content }}</p>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                {% if thread.comments|length > 3 %}
+                    <a href="{{ path('app_thread_show', {id: threadId}) }}" class="see-more">
+                        Voir plus de commentaires ({{ thread.comments|length - 3 }}…)
+                    </a>
+                {% endif %}
+
+                <hr>
+
+
+                <div class="comment-form">
+                    {{ form_start(commentForms[threadId]) }}
+                    {{ form_widget(commentForms[threadId].content) }}
+                    <button type="submit">Commenter</button>
+                    {{ form_end(commentForms[threadId]) }}
+                </div>
+
+            </div>
+
+        {% endfor %}
+    </div>
+
+{% endblock %}

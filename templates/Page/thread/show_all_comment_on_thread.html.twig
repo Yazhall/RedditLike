@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/threadShow.css') }}">
+{% endblock %}
+
+{% block body %}
+
+    <div class="thread">
+
+        <h2>{{ thread.title }}</h2>
+        <p>{{ thread.content }}</p>
+
+        {% if thread.threadFiles is not empty %}
+            <div class="media-gallery">
+
+                {% for tf in thread.threadFiles %}
+                    {% set file = tf.file %}
+                    {% if file is not empty %}
+                        {% set ext = file.originalName|split('.')|last|lower %}
+
+
+                        {% if ext in ['jpg', 'jpeg', 'png', 'gif', 'webp'] %}
+                            <img src="{{ asset(file.path) }}" class="media-img" alt="media">
+                        {% endif %}
+
+
+                        {% if ext in ['mp4', 'webm'] %}
+                            <video class="media-video" controls>
+                                <source src="{{ asset(file.path) }}">
+                            </video>
+                        {% endif %}
+
+                        {% if ext not in ['jpg','jpeg','png','gif','webp','mp4','webm'] %}
+                            <a href="{{ asset(file.path) }}" target="_blank">
+                                {{ file.originalName }}
+                            </a>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+
+            </div>
+        {% endif %}
+    </div>
+
+    <h3>Commentaires</h3>
+
+    {% for comment in thread.comments %}
+        <div class="comment">
+            <strong>{{ comment.author.username }}</strong>
+            <p>{{ comment.content }}</p>
+            <small>{{ comment.createdAt|date('d/m/Y H:i') }}</small>
+        </div>
+    {% else %}
+        <p>Aucun commentaire pour le moment.</p>
+    {% endfor %}
+
+{% endblock %}
