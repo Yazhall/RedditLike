@@ -31,3 +31,5 @@
 # IDE
 /.idea/
 /.vscode/
+/public/uploads/
+/public/uploads/threads/
