@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier le thread{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/edit_thread.css') }}">
+{% endblock %}
+{% block body %}
+    <div class="container">
+
+        <h1>Modifier le thread</h1>
+
+        {{ form_start(form, {
+            'attr': {
+                'enctype': 'multipart/form-data'
+            }
+        }) }}
+
+        <div class="form-group">
+            {{ form_label(form.title) }}
+            {{ form_widget(form.title) }}
+            {{ form_errors(form.title) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.content) }}
+            {{ form_widget(form.content) }}
+            {{ form_errors(form.content) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.uploads) }}
+            {{ form_widget(form.uploads) }}
+            {{ form_errors(form.uploads) }}
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+            Enregistrer les modifications
+        </button>
+
+        <a href="{{ path('app_thread_show', { id: thread.id }) }}"
+           class="btn btn-secondary">
+            Annuler
+        </a>
+
+        {{ form_end(form) }}
+
+    </div>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/my_thread_list.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="page-wrapper">
+
+        <div class="my-threads-container">
+
+            <h1 class="page-title">Mes threads</h1>
+
+            {% if threads is empty %}
+                <p class="empty-message">Tu n’as encore créé aucun thread.</p>
+            {% endif %}
+
+            {% for thread in threads %}
+                <div class="thread-card">
+                    <h2 class="thread-title">{{ thread.title }}</h2>
+
+                    <p class="thread-content">
+                        {{ thread.content|slice(0, 150) }}...
+                    </p>
+
+                    <div class="thread-actions">
+                        <a class="btn btn-secondary"
+                           href="{{ path('app_thread_show', {id: thread.id}) }}">
+                            Voir
+                        </a>
+
+                        <a class="btn btn-primary"
+                           href="{{ path('app_thread_edit', {id: thread.id}) }}">
+                            Modifier
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+
+        </div>
+
+    </div>
+{% endblock %}
+
