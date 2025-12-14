@@ -25,6 +25,7 @@ security:
                 check_path: app_login
                 username_parameter: _username
                 password_parameter: _password
+                always_use_default_target_path: true
                 default_target_path: my_account
             logout:
                 path: app_logout

@@ -5,8 +5,75 @@ Ce projet utilise Docker pour lancer :
 - Nginx
 - MariaDB
 
-## 🚀 Lancer le projet
+##  Lancer le projet
 
-### 1. Copier le fichier d’exemple d’environnement
-```bash
-cp .env.example .env
+Lancer Docker
+
+Depuis la racine du projet :
+
+docker compose up -d
+
+Vérifie que les containers tournent
+
+docker ps
+
+
+Entrer dans le container PHP
+
+docker exec -it php bash
+
+
+Toutes les commandes suivantes sont exécutées dans le container PHP.
+
+Installer les dépendances :
+
+composer install
+
+Variables d’environnement .env fourni dans le Zip du rendu :
+
+.env
+
+Utilisé automatiquement pour les tests fourni dans le Zip du rendu.
+
+.env.test
+
+
+Base de données
+Créer la base (DEV)
+php bin/console doctrine:database:create
+php bin/console doctrine:schema:create
+
+
+Créer la base (TEST)
+php bin/console doctrine:database:create --env=test
+php bin/console doctrine:schema:create --env=test
+
+Fixtures (données de test)
+Charger les fixtures (DEV)
+php bin/console doctrine:fixtures:load
+
+Charger les fixtures (TEST)
+php bin/console doctrine:fixtures:load --env=test --no-interaction
+
+
+Fixtures disponibles :
+
+Users (user / admin)
+
+Threads
+
+
+
+Lancer les tests :
+php bin/phpunit
+
+Accéder à l’application
+http://localhost:8080
+
+Comptes de test
+
+Après chargement des fixtures :
+
+Rôle	Email	            Mot de passe
+User	user@test.com	    password
+Admin	admin@test.com	    admin

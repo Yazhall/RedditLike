@@ -20,6 +20,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class ThreadController extends AbstractController
 {
     #[Route('/creat-thread', name: 'app_thread_create')]
+    #[IsGranted('ROLE_USER')]
     public function createFeed(
         Request $request,
         EntityManagerInterface $entityManager,

@@ -21,12 +21,24 @@
             <li>
                 <a href="{{ path('app_my_thread_liste') }}">Mes threads</a>
             </li>
+            <li class="logout">
+                <form method="post" action="{{ path('app_logout') }}">
+                    <input type="hidden" name="_csrf_token"
+                           value="{{ csrf_token('logout') }}">
+                    <button type="submit">
+                        🚪 Déconnexion
+                    </button>
+                </form>
+            </li>
 
             {% if is_granted('ROLE_ADMIN') %}
                 <li>
                     <a href="{{ path('app_admin_dashboard') }}">Administration</a>
                 </li>
             {% endif %}
+
+
+
         </ul>
 
     </div>

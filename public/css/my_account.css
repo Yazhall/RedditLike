@@ -24,6 +24,7 @@
     margin: 15px 0;
 }
 
+/* Liens normaux */
 .account-menu a {
     display: block;
     padding: 12px 16px;
@@ -36,5 +37,28 @@
 }
 
 .account-menu a:hover {
-    background: #003c99;
+    background: #003f9e;
+}
+
+/* 🟥 LOGOUT */
+.account-menu .logout form {
+    margin: 0;
+}
+
+.account-menu .logout button {
+    display: block;
+    width: 100%;
+    padding: 12px 16px;
+    background: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 17px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.account-menu .logout button:hover {
+    background: #c0392b;
 }
