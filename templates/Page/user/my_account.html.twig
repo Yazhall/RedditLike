@@ -13,12 +13,20 @@
             <li>
                 <a href="{{ path('app_feed_thread') }}">Voir tous les threads</a>
             </li>
+
             <li>
                 <a href="{{ path('app_thread_create') }}">Créer un nouveau thread</a>
             </li>
+
             <li>
-                <a href="{{ path('app_my_thread_liste') }}"> Mes thread</a>
+                <a href="{{ path('app_my_thread_liste') }}">Mes threads</a>
             </li>
+
+            {% if is_granted('ROLE_ADMIN') %}
+                <li>
+                    <a href="{{ path('app_admin_dashboard') }}">Administration</a>
+                </li>
+            {% endif %}
         </ul>
 
     </div>

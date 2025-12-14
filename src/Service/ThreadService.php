@@ -27,9 +27,21 @@ class ThreadService
         $this->entityManager->flush();
     }
 
-    public function softDelete(Thread $thread, UserInterface $user): void
+
+    public function softDelete(Thread $thread, ?UserInterface $user): void
     {
+        if (!$user) {
+            throw new AccessDeniedException('Utilisateur non authentifié.');
+        }
+        if (
+            $thread->getAuthor() !== $user &&
+            !in_array('ROLE_ADMIN', $user->getRoles(), true)
+        ) {
+            throw new AccessDeniedException();
+        }
+
         $this->assertAuthor($thread, $user);
+
         $thread->setIsDeleted(true);
         $this->entityManager->flush();
     }

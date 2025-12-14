@@ -44,6 +44,8 @@ security:
             - { path: ^/validate, roles: PUBLIC_ACCESS }
             - { path: ^/lost_password, roles: PUBLIC_ACCESS }
             - { path: ^/reset_password, roles: PUBLIC_ACCESS }
+            - { path: ^/admin, roles: ROLE_ADMIN }
+            - { path: ^/profile, roles: ROLE_USER }
             - { path: ^/, roles: ROLE_USER }
 
 

@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Administration{% endblock %}
+
+{% block body %}
+    <div class="admin-container">
+
+        <h1>Administration</h1>
+
+        <div class="admin-actions">
+            <a href="{{ path('app_admin_users') }}" class="admin-btn">
+                👤 Voir tous les utilisateurs
+            </a>
+
+            <a href="{{ path('app_admin_threads') }}" class="admin-btn">
+                🧵 Voir tous les threads
+            </a>
+        </div>
+
+    </div>
+{% endblock %}

@@ -12,5 +12,21 @@ class ThreadRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Thread::class);
     }
+    public function findNotDeleted(): array
+    {
+        return $this->createQueryBuilder('t')
+            ->where('t.isDeleted = false')
+            ->orderBy('t.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllWithDeleted(): array
+    {
+        return $this->createQueryBuilder('t')
+            ->orderBy('t.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
 
 }

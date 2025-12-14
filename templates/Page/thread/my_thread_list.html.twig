@@ -1,5 +1,7 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Mes threads{% endblock %}
+
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('css/my_thread_list.css') }}">
 {% endblock %}
@@ -12,33 +14,62 @@
             <h1 class="page-title">Mes threads</h1>
 
             {% if threads is empty %}
-                <p class="empty-message">Tu n’as encore créé aucun thread.</p>
-            {% endif %}
+                <p class="empty-message">
+                    Tu n’as encore créé aucun thread.
+                </p>
+            {% else %}
 
-            {% for thread in threads %}
-                <div class="thread-card">
-                    <h2 class="thread-title">{{ thread.title }}</h2>
+                {% for thread in threads %}
+                    <div class="thread-card">
 
-                    <p class="thread-content">
-                        {{ thread.content|slice(0, 150) }}...
-                    </p>
+                        <h2 class="thread-title">
+                            {{ thread.title }}
+                        </h2>
 
-                    <div class="thread-actions">
-                        <a class="btn btn-secondary"
-                           href="{{ path('app_thread_show', {id: thread.id}) }}">
-                            Voir
-                        </a>
+                        <p class="thread-content">
+                            {{ thread.content|slice(0, 150) }}…
+                        </p>
 
-                        <a class="btn btn-primary"
-                           href="{{ path('app_thread_edit', {id: thread.id}) }}">
-                            Modifier
-                        </a>
+                        <div class="thread-actions">
+
+                            <a
+                                href="{{ path('app_thread_show', { id: thread.id }) }}"
+                                class="btn btn-secondary"
+                            >
+                                Voir
+                            </a>
+
+                            <a
+                                href="{{ path('app_thread_edit', { id: thread.id }) }}"
+                                class="btn btn-primary"
+                            >
+                                Modifier
+                            </a>
+
+                            <form
+                                method="post"
+                                action="{{ path('app_thread_delete', { id: thread.id }) }}"
+                                class="delete-form"
+                                onsubmit="return confirm('Supprimer ce thread ?');"
+                            >
+                                <input
+                                    type="hidden"
+                                    name="_token"
+                                    value="{{ csrf_token('delete_thread_' ~ thread.id) }}"
+                                >
+                                <button type="submit" class="btn btn-danger">
+                                    Supprimer
+                                </button>
+                            </form>
+
+                        </div>
+
                     </div>
-                </div>
-            {% endfor %}
+                {% endfor %}
+
+            {% endif %}
 
         </div>
 
     </div>
 {% endblock %}
-

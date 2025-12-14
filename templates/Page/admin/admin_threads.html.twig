@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Administration - Threads{% endblock %}
+
+{% block body %}
+    <div class="admin-container">
+
+        <h1>Gestion des threads</h1>
+
+        <table class="admin-table">
+            <thead>
+            <tr>
+                <th>Titre</th>
+                <th>Auteur</th>
+                <th>Date</th>
+                <th>Statut</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for thread in threads %}
+                <tr class="{{ thread.isDeleted ? 'deleted' : '' }}">
+
+                    <td>{{ thread.title }}</td>
+
+                    <td>{{ thread.author.username }}</td>
+
+                    <td>{{ thread.createdAt|date('d/m/Y H:i') }}</td>
+
+                    <td>
+                        {% if thread.isDeleted %}
+                            <span class="status deleted">Supprimé</span>
+                        {% else %}
+                            <span class="status active">Actif</span>
+                        {% endif %}
+                    </td>
+
+                    <td class="actions">
+
+
+                        {% if not thread.isDeleted %}
+                            <form
+                                method="post"
+                                action="{{ path('app_admin_thread_delete', { id: thread.id }) }}"
+                                onsubmit="return confirm('Supprimer ce thread ?');"
+                                class="inline-form"
+                            >
+                                <input type="hidden" name="_token"
+                                       value="{{ csrf_token('admin_delete_thread_' ~ thread.id) }}">
+
+                                <button type="submit" class="btn btn-danger">
+                                    Supprimer
+                                </button>
+                            </form>
+
+                        {% else %}
+                            <form
+                                method="post"
+                                action="{{ path('app_admin_thread_restore', { id: thread.id }) }}"
+                                onsubmit="return confirm('Restaurer ce thread ?');"
+                                class="inline-form"
+                            >
+                                <input type="hidden" name="_token"
+                                       value="{{ csrf_token('admin_restore_thread_' ~ thread.id) }}">
+
+                                <button type="submit" class="btn btn-success">
+                                    Restaurer
+                                </button>
+                            </form>
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5" class="empty">
+                        Aucun thread trouvé.
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+{% endblock %}

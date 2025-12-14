@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Administration - Utilisateurs{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/admin_users.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="admin-container">
+
+        <h1>Gestion des utilisateurs</h1>
+
+        <table class="admin-table">
+            <thead>
+            <tr>
+                <th>Email</th>
+                <th>Username</th>
+                <th>Rôles</th>
+                <th>Statut</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.roles|join(', ') }}</td>
+
+                    <td>
+                        {% if user.enabled %}
+                            <span class="status active">Actif</span>
+                        {% else %}
+                            <span class="status banned">Banni</span>
+                        {% endif %}
+                    </td>
+
+                    <td class="actions">
+
+                        <form method="post"
+                              action="{{ path('app_admin_user_toggle_ban', {id: user.id}) }}">
+                            <button class="btn btn-danger">
+                                {{ user.enabled ? 'Bannir' : 'Débannir' }}
+                            </button>
+                        </form>
+
+                        <form method="post"
+                              action="{{ path('app_admin_user_toggle_admin', {id: user.id}) }}">
+                            <button class="btn btn-primary">
+                                {{ 'ROLE_ADMIN' in user.roles ? 'Retirer admin' : 'Promouvoir admin' }}
+                            </button>
+                        </form>
+
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+{% endblock %}

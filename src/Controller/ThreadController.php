@@ -55,7 +55,7 @@ class ThreadController extends AbstractController
         EntityManagerInterface $entityManager,
     ):Response
     {
-        $threads = $entityManager->getRepository(Thread::class)->findBy([], ['createdAt' => 'DESC']);
+        $threads = $entityManager->getRepository(Thread::class)->findNotDeleted();
         $commentForms = [];
         foreach ($threads as $thread) {
             $comment = new Comment();
@@ -141,7 +141,7 @@ class ThreadController extends AbstractController
             $threadService->softDelete($thread, $this->getUser());
         }
 
-        return $this->redirectToRoute('app_feed_thread');
+        return $this->redirectToRoute('app_my_thread_liste');
     }
     #[Route('/my_thread_liste', name: 'app_my_thread_liste')]
     public function showMyThreadListe(
@@ -151,8 +151,7 @@ class ThreadController extends AbstractController
     {
         $threads = $entityManager->getRepository(Thread::class)->findBy([
             'author' => $this->getUser(),
-            'isDeleted' => false,
-            ],
+            'isDeleted' => false],
             ['createdAt' => 'DESC']);
         return $this->render('Page/thread/my_thread_list.html.twig', [
             'threads' => $threads,
