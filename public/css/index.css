@@ -1,0 +1,59 @@
+/* Page d’accueil / navigation simple */
+.home-links {
+    text-align: center;
+}
+
+.home-links h1 {
+    margin-bottom: 24px;
+}
+
+.nav-links {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+/* Boutons */
+.btn {
+    display: inline-block;
+    padding: 10px 18px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+/* Variantes */
+.btn-primary {
+    background: #2563eb;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background: #1e4fd8;
+}
+
+.btn-secondary {
+    background: #4b5563;
+    color: #fff;
+}
+
+.btn-secondary:hover {
+    background: #374151;
+}
+
+.btn-link {
+    background: transparent;
+    color: #2563eb;
+}
+
+.btn-link:hover {
+    text-decoration: underline;
+}

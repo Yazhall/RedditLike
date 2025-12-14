@@ -1,0 +1,50 @@
+.admin-container {
+    max-width: 700px;
+    margin: 80px auto;
+    padding: 30px;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+    text-align: center;
+}
+
+.admin-container h1 {
+    font-size: 30px;
+    margin-bottom: 40px;
+    color: #222;
+}
+
+.admin-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.admin-btn {
+    display: block;
+    padding: 18px;
+    font-size: 18px;
+    font-weight: 600;
+    text-decoration: none;
+    color: #ffffff;
+    background: #0056d6;
+    border-radius: 8px;
+    transition: background 0.25s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.admin-btn:hover {
+    background: #003c99;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+@media (min-width: 600px) {
+    .admin-actions {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .admin-btn {
+        width: 48%;
+    }
+}

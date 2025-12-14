@@ -1,21 +1,29 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/creat_thead.css') }}">
+{% endblock %}
+
 {% block body %}
-    <h1>Créer un nouveau thread</h1>
+    <div class="thread-form-container">
 
-    {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
+        <h1>Créer un nouveau thread</h1>
 
-    {{ form_row(form.title) }}
-    {{ form_row(form.content) }}
+        {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
 
-    {{ form_row(form.uploads, {
-        label: 'Ajouter des fichiers (images, vidéos, gifs...)',
-        attr: {
-            multiple: true
-        }
-    }) }}
+        {{ form_row(form.title) }}
+        {{ form_row(form.content) }}
 
-    <button type="submit">Créer</button>
+        {{ form_row(form.uploads, {
+            label: 'Ajouter des fichiers (images, vidéos, gifs...)',
+            attr: { multiple: true }
+        }) }}
 
-    {{ form_end(form) }}
+        <button type="submit" class="btn-primary">
+            Créer
+        </button>
+
+        {{ form_end(form) }}
+
+    </div>
 {% endblock %}

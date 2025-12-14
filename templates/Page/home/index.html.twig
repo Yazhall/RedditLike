@@ -1,19 +1,27 @@
 {% extends 'base.html.twig' %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/index.css') }}">
+{% endblock %}
 
 {% block body %}
-    <ul>
-        <li>
-            <a href="{{ path('app_user_create') }}">register</a>
-        </li>
-        <li>
-            <a href="{{ path('app_login') }}">login</a>
-        </li>
-        <li>
-            <a href="{{ path('app_home_index') }}">contact</a>
-        </li>
-    </ul>
+    <div class="page-container home-links">
 
+        <h1>Bienvenue</h1>
 
+        <ul class="nav-links">
+            <li>
+                <a href="{{ path('app_user_create') }}" class="btn btn-primary">
+                    Créer un compte
+                </a>
+            </li>
 
+            <li>
+                <a href="{{ path('app_login') }}" class="btn btn-secondary">
+                    Se connecter
+                </a>
+            </li>
 
+        </ul>
+
+    </div>
 {% endblock %}
